@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Framework\Container;
 
 use Closure;
 use InvalidArgumentException;
 use ReflectionClass;
-use ReflectionException;
 use ReflectionFunction;
 use ReflectionMethod;
 use ReflectionNamedType;
@@ -68,7 +69,7 @@ class Container
         return $this->build($abstract);
     }
 
-    protected function build(Closure|string $concrete)
+    protected function build(Closure|string $concrete): object
     {
         // クロージャなら実行して返す
         if ($concrete instanceof Closure) {
@@ -84,11 +85,7 @@ class Container
             throw new InvalidArgumentException("Class {$concrete} does not exist.");
         }
 
-        try {
-            $refClass = new ReflectionClass($concrete);
-        } catch (ReflectionException $e) {
-            throw new InvalidArgumentException("Cannot reflect class {$concrete}: " . $e->getMessage(), 0, $e);
-        }
+        $refClass = new ReflectionClass($concrete);
 
         // インスタンス化が可能か確認(abstractClassやinterfaceは例外とする)
         if (!$refClass->isInstantiable()) {
@@ -104,7 +101,7 @@ class Container
 
         $deps = [];
 
-        foreach($constructor->getParameters() as $param) {
+        foreach ($constructor->getParameters() as $param) {
             $type = $param->getType();
 
             // 型指定がない or 組み込み型（int/string 等）はエラー
@@ -142,12 +139,18 @@ class Container
         // Reflection オブジェクトを作る
         if (is_array($callable)) {
             [$objectOrClass, $method] = $callable;
+            if (!is_object($objectOrClass) && !is_string($objectOrClass)) {
+                throw new InvalidArgumentException('Callable array must have object or class-string as first element.');
+            }
+            if (!is_string($method)) {
+                throw new InvalidArgumentException('Callable array second element must be method name.');
+            }
             $ref = new ReflectionMethod($objectOrClass, $method);
         } elseif (is_string($callable) && str_contains($callable, '::')) {
             [$class, $method] = explode('::', $callable, 2);
             $ref = new ReflectionMethod($class, $method);
         } else {
-            $ref = new ReflectionFunction($callable);
+            $ref = new ReflectionFunction(Closure::fromCallable($callable));
         }
 
         $args = [];

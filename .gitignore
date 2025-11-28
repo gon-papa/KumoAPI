@@ -1,0 +1,13 @@
+# Dependencies
+/vendor/
+
+# Composer
+.php-cs-fixer.cache
+
+# Environment
+.env
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store

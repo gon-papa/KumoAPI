@@ -1,11 +1,13 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Framework\Router;
 
 class Route
 {
-    private static Router $router;
+    private static ?Router $router = null;
+    /** @var list<string> */
     private static array $prefixStack = [''];
 
     public static function setRouter(Router $router): void
@@ -28,16 +30,25 @@ class Route
         }
     }
 
+    /**
+     * @param array{0: class-string, 1: string} $handler
+     */
     public static function get(string $path, array $handler): void
     {
         self::register('GET', $path, $handler);
     }
 
+    /**
+     * @param array{0: class-string, 1: string} $handler
+     */
     public static function post(string $path, array $handler): void
     {
         self::register('POST', $path, $handler);
     }
 
+    /**
+     * @param array{0: class-string, 1: string} $handler
+     */
     private static function register(string $method, string $path, array $handler): void
     {
         $router = self::ensureRouter();
@@ -70,7 +81,7 @@ class Route
 
     private static function ensureRouter(): Router
     {
-        if (!self::$router) {
+        if (self::$router === null) {
             throw new RouterException('Router instance is not set. Call Route::setRouter() first.');
         }
 

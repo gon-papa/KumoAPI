@@ -4,5 +4,12 @@
       "Framework\\": "src/Framework/",
       "App\\": "src/App/"
     }
+  },
+  "require": {
+    "php": ">=8.3"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^3.90",
+    "phpstan/phpstan": "^2.1"
   }
 }
