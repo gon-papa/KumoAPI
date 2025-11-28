@@ -4,5 +4,8 @@
       "Framework\\": "src/Framework/",
       "App\\": "src/App/"
     }
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^3.90"
   }
 }

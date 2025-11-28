@@ -23,3 +23,6 @@ composer-install:          # 依存をインストール
 
 composer-update:           # 依存を更新
 	docker-compose run --rm -e APP_DOCROOT=$(APP_DOCROOT) php composer update
+
+fix: # フォーマット
+	docker-compose run --rm -e APP_DOCROOT=$(APP_DOCROOT) php vendor/bin/php-cs-fixer fix
