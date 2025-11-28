@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  php:
+    build: .                     # Dockerfile で PHP 8.3 環境を作成
+    container_name: kumoapi-php
+    ports:
+      - "8000:8000"              # ローカル 8000 -> コンテナ 8000
+    volumes:
+      - .:/app                   # カレントをマウントしてホットリロード
+    environment:
+      APP_DOCROOT: src/public        # php -S のドキュメントルート
