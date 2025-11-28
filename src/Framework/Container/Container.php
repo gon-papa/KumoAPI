@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Framework\Container;
 
 use Closure;
@@ -104,7 +106,7 @@ class Container
 
         $deps = [];
 
-        foreach($constructor->getParameters() as $param) {
+        foreach ($constructor->getParameters() as $param) {
             $type = $param->getType();
 
             // 型指定がない or 組み込み型（int/string 等）はエラー

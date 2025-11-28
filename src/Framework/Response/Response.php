@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Framework\Response;
 
 class Response
@@ -8,7 +10,8 @@ class Response
         private string $content,
         private int $status = 200,
         private array $headers = [],
-    ) {}
+    ) {
+    }
 
     public static function json(array $data, int $status = 200): self
     {

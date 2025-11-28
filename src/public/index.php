@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 require __DIR__ . '/../../vendor/autoload.php';
 
+use function App\Route\registerRoutes;
+
 use Framework\Container\Container;
 use Framework\Request\Request;
 use Framework\Response\Response;
 use Framework\Router\Router;
-use function App\Route\registerRoutes;
 
 $container = new Container();
 $request = Request::fromGlobals();

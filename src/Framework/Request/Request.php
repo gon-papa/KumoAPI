@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Framework\Request;
 
 class Request
@@ -11,7 +13,8 @@ class Request
         public readonly array $headers,
         public readonly array $body,
         public readonly ?array $json,
-    ) {}
+    ) {
+    }
 
     public static function fromGlobals(): self
     {
