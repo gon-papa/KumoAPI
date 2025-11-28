@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 require __DIR__ . '/../../vendor/autoload.php';
 
+use Framework\Container\Container;
 use Framework\Request\Request;
 use Framework\Response\Response;
 use Framework\Router\Router;
 use function App\Route\registerRoutes;
 
+$container = new Container();
 $request = Request::fromGlobals();
-$router = new Router();
+$container->instance(Request::class, $request);
+$router = $container->make(Router::class);
 
 // Load routes
 require __DIR__ . '/../App/Route/route.php';
@@ -23,9 +26,8 @@ if ($route === null) {
 } else {
     [$handler, $params] = $route;
     [$class, $method] = $handler;
-    $controller = new $class();
-
-    $response = $controller->$method($request, ...$params);
+    $controller = $container->make($class);
+    $response = $container->call([$controller, $method], $params);
 }
 
 $response->send();
