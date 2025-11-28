@@ -10,10 +10,12 @@ use Framework\Container\Container;
 use Framework\Request\Request;
 use Framework\Response\Response;
 use Framework\Router\Router;
+use RuntimeException;
 
 $container = new Container();
 $request = Request::fromGlobals();
 $container->instance(Request::class, $request);
+/** @var Router $router */
 $router = $container->make(Router::class);
 
 // Load routes
@@ -28,7 +30,14 @@ if ($route === null) {
     [$handler, $params] = $route;
     [$class, $method] = $handler;
     $controller = $container->make($class);
-    $response = $container->call([$controller, $method], $params);
+    $callable = [$controller, $method];
+    if (!is_callable($callable)) {
+        throw new RuntimeException('Route handler is not callable.');
+    }
+    $response = $container->call($callable, $params);
+    if (!$response instanceof Response) {
+        throw new RuntimeException('Controller must return a Response instance.');
+    }
 }
 
 $response->send();

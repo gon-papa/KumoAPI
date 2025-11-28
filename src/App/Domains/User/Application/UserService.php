@@ -13,6 +13,10 @@ class UserService
     ) {
     }
 
+    /**
+     * @param int $id
+     * @return array{id: int, name: string, gender: string, name: string}
+     */
     public function getUserById(int $id): array
     {
         return $this->repository->getUser($id);

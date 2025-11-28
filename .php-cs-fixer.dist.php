@@ -6,7 +6,10 @@ $finder = PhpCsFixer\Finder::create()
 ;
 
 $config = new PhpCsFixer\Config();
-return $config->setRules([
+return $config->setParallelConfig(
+        new PhpCsFixer\Runner\Parallel\ParallelConfig(2)
+    )
+    ->setRules([
         // 最新のPSR-12に準拠したルールセットを適用
         '@PSR12' => true,
         // use文をアルファベット順にソート

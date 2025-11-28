@@ -6,6 +6,9 @@ namespace Framework\Response;
 
 class Response
 {
+    /**
+     * @param array<string, string> $headers
+     */
     public function __construct(
         private string $content,
         private int $status = 200,
@@ -13,9 +16,13 @@ class Response
     ) {
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public static function json(array $data, int $status = 200): self
     {
-        return new self(json_encode($data, JSON_UNESCAPED_UNICODE), $status, [
+        $content = json_encode($data, JSON_UNESCAPED_UNICODE);
+        return new self($content === false ? '' : $content, $status, [
             'Content-Type' => 'application/json; charset=utf-8'
         ]);
     }
